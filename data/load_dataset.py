@@ -4,16 +4,12 @@ from huggingface_hub import login
 import os
 
 def load_hf_dataset():
-    """
-    Loads the Arabic AI-Generated Abstracts dataset from HuggingFace.
-    Requires an HF token stored in a .env file.
 
-    """
 
     # Load environment variables
     load_dotenv()
 
-    hf_token = os.getenv("HF_TOKEN")
+    hf_token = ''
     if hf_token is None:
         raise ValueError("HF_TOKEN not found in .env file.")
 
