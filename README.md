@@ -1,121 +1,175 @@
-# Detection-of-AI-Generated-Arabic-Text
-This repository contains the full implementation, models, and resources for our project on detecting AI-generated vs. human-written Arabic text.
-Our approach leverages extensive preprocessing, Arabic-specific normalization, and sentence-transformer embeddings, combined with multiple machine learning and deep learning algorithms for robust detection performance.
+</div>
+ Table of Contents
 
-Table of Contents
+Project Overview
 
 Task Description
 
 Dataset
 
+System Architecture
+
 Approach
+
+Model Cards
 
 Training
 
+Installation
+
+Quick Start
+
 Results
+
+File Structure
 
 Citation
 
-Task Description
+ Project Overview
 
-The goal of this project is to build a reliable system capable of distinguishing human-written from AI-generated Arabic texts. The problem is formulated as a binary classification task, where each input abstract must be classified as:
+This project presents a complete pipeline for detecting AI-generated vs. human-written Arabic text.
+We combine Arabic-tailored preprocessing, sentence-transformer embeddings, and multiple ML + DL models to achieve highly accurate classification.
+
+The system is designed for:
+
+Academic integrity detection
+
+Research paper and abstract verification
+
+AI content moderation
+
+NLP research on LLM text detection
+
+ Task Description
+
+The objective is to classify each Arabic text (abstract) into:
 
 1 — Human-written
 
 0 — AI-generated
 
-This task is increasingly important due to the rapid proliferation of Arabic-capable large language models and the difficulty in detecting automatically generated academic-style text.
+This is formulated as a binary classification problem using machine learning and deep learning models on top of transformer embeddings.
 
-Our work focuses on constructing a scalable detection pipeline using transformer-based embeddings and several machine learning algorithms.
+📊 Dataset
 
-Dataset
+We use the KFUPM-JRCAI Arabic Generated Abstracts dataset, containing:
 
-The dataset used in this project is obtained from the KFUPM-JRCAI Arabic Generated Abstracts corpus.
-It contains 41,940 samples of Arabic research abstracts, evenly split between:
-
-Human-written abstracts
-
-AI-generated abstracts produced by multiple LLMs
-
-Dataset Statistics
 Split	Count
 Training	29,358
 Validation/Test	6,291
-Total Samples	41,940
-Classes	0 (AI), 1 (Human)
+Total	41,940
+
+The dataset contains a balanced distribution between:
+
+Human-written texts
+
+AI-generated texts produced by multiple LLMs
 
 Each entry includes:
 
 abstract_text
 
-generated_by (human or model name)
+generated_by
 
 source_split
 
 label (0/1)
 
-The dataset is well-balanced, which ensures stable model training and fair evaluation.
+🧱 System Architecture
+High Level Pipeline
+flowchart TD
+    A[Raw Arabic Text] --> B[Arabic Preprocessing]
+    B --> C[Sentence Transformer Embeddings]
+    C --> D[ML Models: LR, SVM, RF, XGBoost]
+    C --> E[DL Model: FFNN + BERT Embeddings]
+    D --> F[Predicted Class]
+    E --> F
 
-Approach
+🧪 Approach
 
-Our detection pipeline consists of three main components:
+Our pipeline consists of:
 
-1. Arabic Text Preprocessing
+1. Arabic Preprocessing
 
-We apply extensive preprocessing tailored for Arabic:
+Remove diacritics
 
-Diacritic removal
+Normalize letters (أ→ا, ى→ي, ة→ه, etc.)
 
-Normalization:
+Regex tokenization
 
-(أ, إ, آ → ا), (ى → ي), (ة → ه), (ؤ → و), (ئ → ي)
-
-Removal of non-Arabic symbols
-
-Tokenization using an Arabic-compatible regex
-
-Stopword removal
+Arabic stopword removal
 
 ISRI stemming
 
-2. Transformer-Based Embeddings
+2. Embedding Generation
 
-We use a sentence-transformer model to generate high-quality 384-dimensional embeddings for each abstract.
-These embeddings encode semantic, stylistic, and contextual features.
+We generate 384-dimensional embeddings using a sentence-transformer model optimized for Arabic semantics.
 
-3. Classification Algorithms
-
-We trained several ML and DL models on the embeddings:
-
+3. Classification Models
 Machine Learning Models
 
-Logistic Regression
+✓ Logistic Regression
 
-Support Vector Machine (SVM)
+✓ Support Vector Machine (SVM)
 
-Random Forest
+✓ Random Forest
 
-XGBoost
+✓ XGBoost
 
 Deep Learning Model
 
-Feedforward Neural Network (FFNN) using BERT embeddings
+✓ Feedforward Neural Network (FFNN) using BERT embeddings
 
-Each model was trained independently and evaluated using precision, recall, F1-score, and accuracy.
+Each model was trained independently.
 
-Training
+ Model Cards
 
-To train all models, run the following scripts:
+Below are model cards describing each algorithm:
 
+Model Card — Logistic Regression
+
+Type: Linear classifier
+Features: Sentence-transformer embeddings
+Strengths: Lightweight, fast, high precision
+Use Cases: Baseline detection, real-time inference
+
+Model Card — SVM
+
+Type: Margin-based classifier
+Strengths: Excellent with high-dimensional vectors
+Performance: One of the top-performing models
+Use Cases: Academic text verification
+
+Model Card — Random Forest
+
+Type: Bagging ensemble
+Strengths: Best accuracy in the project, stable performance
+Use Cases: Most reliable classifier for production environments
+
+Model Card — XGBoost
+
+Type: Gradient boosting
+Strengths: Highly competitive, robust to noise
+Use Cases: Interpretability + performance balance
+
+Model Card — FFNN (BERT Embeddings)
+
+Type: Deep Neural Network
+Strengths: Encodes semantic depth
+Limitations: Static embeddings → lower performance
+Use Cases: Experimental DL baseline
+
+ Training
+Train all ML Models:
 python train_logistic_regression.py
 python train_svm.py
 python train_random_forest.py
 python train_xgboost.py
+
+Train the FFNN Model:
 python train_ffnn.py
 
-
-Model outputs and .pkl files are saved under:
-
+Model outputs are saved to:
 models/
     logistic_regression.pkl
     svm.pkl
@@ -123,16 +177,26 @@ models/
     xgboost.pkl
     ffnn_model.h5
 
-Results
+ Installation
+git clone https://github.com/your-username/your-repo.git
+cd your-repo
+pip install -r requirements.txt
 
-Below are the performance results of all models on the 6,291-sample validation set.
+ Quick Start
+Run Inference
+python predict.py --text "ضع النص العربي هنا للتحقق"
 
+Expected Output
+Prediction: Human (1)
+Confidence: 92.4%
+
+ Results
 Machine Learning Models
 Model	Acc.	Prec.	Rec.	F1
 Logistic Regression	0.962	0.96	0.96	0.96
 SVM	0.975	0.98	0.98	0.98
 Random Forest	0.978	0.98	0.98	0.98
 XGBoost	0.969	0.97	0.95	0.97
-Deep Learning Model
+Deep Learning Models
 Model	Acc.	Prec.	Rec.	F1
 FFNN (BERT Embeddings)	0.870	0.86	0.87	0.86
