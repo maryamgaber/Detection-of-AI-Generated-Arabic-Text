@@ -1,28 +1,21 @@
-# 📌 Table of Contents
+#  Table of Contents
 
 - [Project Overview](#project-overview)
 - [Task Description](#task-description)
 - [Dataset](#dataset)
-- [System Architecture](#system-architecture)
-- [Approach](#approach)
-- [Model Cards](#model-cards)
-- [Training](#training)
-- [Installation](#installation)
-- [Quick Start](#quick-start)
 - [Results](#results)
-- [File Structure](#file-structure)
-- [Citation](#citation)
+
 
 ---
 
-# 📌 Project Overview
+#  Project Overview
 
 This repository contains the code and resources for detecting **AI-generated vs. human-written Arabic text** using machine learning and deep learning models built on top of transformer embeddings.  
 The system includes advanced **Arabic preprocessing**, **sentence-transformer embeddings**, and a suite of **ML/DL classifiers** for robust performance.
 
 ---
 
-# 🎯 Task Description
+#  Task Description
 
 The task is formulated as a **binary classification problem**:
 
@@ -34,7 +27,7 @@ The project addresses the rising challenge of identifying automatically generate
 
 ---
 
-# 📊 Dataset
+#  Dataset
 
 We use a large dataset of **41,940 Arabic research abstracts**, composed of:
 
